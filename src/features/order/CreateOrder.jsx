@@ -19,30 +19,8 @@ const isValidPhone = (str) =>
   );
 
 function CreateOrder() {
-  const [withPriority, setWithPriority] = useState(false);
-  const cart = useSelector(getCart);
-  const totalCartPrice = useSelector(getTotalCartPrice);
-  const priorityPrice = withPriority ? totalCartPrice * 0.2 : 0;
-  const totalPrice = totalCartPrice + priorityPrice;
-
-  const {
-    username,
-    status: addressStatus,
-    position,
-    address,
-    error: errorAddress,
-  } = useSelector((state) => state.user);
-  const isLoadingAddress = addressStatus === "loading";
-
-  // const [name, setName] = useState(username);
-
-  const navigation = useNavigation();
-  const formErrors = useActionData();
-  const dispatch = useDispatch();
-
-  const isSubmitting = navigation.state === "submmiting";
-
-  if (!cart.length) return <EmptyCart />;
+  // const [withPriority, setWithPriority] = useState(false);
+  const cart = fakeCart;
 
   return (
     <div className="px-4 py-6">
@@ -72,6 +50,7 @@ function CreateOrder() {
               </p>
             )}
           </div>
+          {formErrors?.phone && <p>{formErrors.phone}</p>}
         </div>
 
         <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -123,20 +102,7 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <input
-            type="hidden"
-            name="position"
-            value={
-              position.longitude && position.latitude
-                ? `${position.latitude}, ${position.longitude}`
-                : ""
-            }
-          />
-          <Button type="primary" disabled={isSubmitting}>
-            {isSubmitting || isLoadingAddress
-              ? "Placing order..."
-              : `Order now from ${formatCurrency(totalPrice)}`}
-          </Button>
+          <button>Order now</button>
         </div>
       </Form>
     </div>
